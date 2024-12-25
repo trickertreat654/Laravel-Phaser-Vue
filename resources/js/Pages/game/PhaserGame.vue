@@ -7,11 +7,16 @@ import StartGame from './main';
 const scene = ref();
 const game = ref();
 
-const emit = defineEmits(['current-active-scene']);
+const props = defineProps({
+    gameinfo: String,
+});
+// console.log(props.gameinfo);
+
+const emit = defineEmits(['current-active-scene', 'player-lost']);
 
 onMounted(() => {
 
-    game.value = StartGame('game-container');
+    game.value = StartGame('game-container', props.gameinfo);
 
     EventBus.on('current-scene-ready', (currentScene) => {
 
@@ -19,6 +24,11 @@ onMounted(() => {
 
         scene.value = currentScene;
 
+    });
+
+     // Listen for the player-lost event
+     EventBus.on('player-lost', (payload) => {
+        emit('player-lost', payload.score); // Emit to parent
     });
 
 });
@@ -37,5 +47,6 @@ defineExpose({ scene, game });
 </script>
 
 <template>
+    
     <div id="game-container"></div>
 </template>

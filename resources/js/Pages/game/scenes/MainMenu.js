@@ -12,6 +12,10 @@ export class MainMenu extends Scene
 
     create ()
     {
+
+        const gameinfo = this.game.customData;
+        console.log('GameInfo in MainMenu:', gameinfo);
+
         this.add.image(512, 384, 'background');
 
         this.logo = this.add.image(512, 300, 'logo').setDepth(100);

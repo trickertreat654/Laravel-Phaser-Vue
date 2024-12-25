@@ -1,7 +1,13 @@
 <script setup>
 import Phaser from 'phaser';
 import { ref, toRaw } from 'vue';
+import { Link, router } from '@inertiajs/vue3';
 import PhaserGame from './game/PhaserGame.vue';
+
+
+defineProps({
+    gameinfo: String,
+})
 
 // The sprite can only be moved in the MainMenu Scene
 const canMoveSprite = ref();
@@ -21,6 +27,10 @@ const changeScene = () => {
     }
 
 }
+
+const handlePlayerLost = (score) => {
+    router.put(route('trash.update', {score: score}));
+};
 
 const moveSprite = () => {
 
@@ -74,10 +84,13 @@ const currentScene = (scene) => {
 </script>
 
 <template>
-    <PhaserGame ref="phaserRef" @current-active-scene="currentScene" />
+    <PhaserGame @player-lost="handlePlayerLost" :gameinfo ref="phaserRef" @current-active-scene="currentScene" />
     <div>
         <div>
-            <button class="button" @click="changeScene">Change Scene</button>
+            <button class="button" @click="changeScene">{{gameinfo}}Change Scene</button>
+        </div>
+        <div>
+            <Link method='put' class="button" :href="route('trash.update')">Change Name</Link>
         </div>
         <div>
             <button :disabled="canMoveSprite" class="button" @click="moveSprite">Toggle Movement</button>
