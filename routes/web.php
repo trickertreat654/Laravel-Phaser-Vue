@@ -12,13 +12,13 @@ Route::get('/', function () {
 
     
 
-    $trash = Trash::first();
+    
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
-        'gameinfo' => $trash->name,
+        
     ]);
 });
 
