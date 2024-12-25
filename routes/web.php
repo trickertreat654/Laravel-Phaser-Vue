@@ -26,15 +26,19 @@ Route::put('/trash', function (Request $request) {
 
     Score::create([
         'my_score' => $request->score,
+        'name' => $request->name,
     ]);
 
-    $trash = Trash::first();
-    $trash->update(['name' => 'Trash'.rand(0, 100)]);
+    // $trash = Trash::first();
+    // $trash->update(['name' => 'Trash'.rand(0, 100)]);
     return redirect()->back();
 })->name('trash.update');
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $scores = Score::all();
+    return Inertia::render('Dashboard', [
+        'scores' => $scores,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
