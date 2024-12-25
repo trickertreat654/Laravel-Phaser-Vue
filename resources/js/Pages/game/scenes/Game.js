@@ -1,3 +1,4 @@
+// import { use } from 'matter';
 import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
 
@@ -9,6 +10,7 @@ let score = 0;
 let scoreText;
 let bombs;
 let gameOver = false;
+let username;
 
 
 export class Game extends Scene
@@ -105,6 +107,8 @@ function collectStar (player, star)
 }
 
 scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+username = this.add.text(player.x, player.y-10, this.game.customData, { fontSize: '8px', fill: '#000' });
+console.log('GameInfo in Game:', this.game.customData);
 
 
 bombs = this.physics.add.group();
@@ -138,35 +142,26 @@ function hitBomb (player, bomb)
    
 
 
-    update ()
-    {
-        
-cursors = this.input.keyboard.createCursorKeys();
+    update() {
+        cursors = this.input.keyboard.createCursorKeys();
 
-if (cursors.left.isDown)
-    {
-        player.setVelocityX(-160);
-    
-        player.anims.play('left', true);
-    }
-    else if (cursors.right.isDown)
-    {
-        player.setVelocityX(160);
-    
-        player.anims.play('right', true);
-    }
-    else
-    {
-        player.setVelocityX(0);
-    
-        player.anims.play('turn');
-    }
-    
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.setVelocityY(-330);
-    }
-    
+        if (cursors.left.isDown) {
+            player.setVelocityX(-160);
+            player.anims.play('left', true);
+        } else if (cursors.right.isDown) {
+            player.setVelocityX(160);
+            player.anims.play('right', true);
+        } else {
+            player.setVelocityX(0);
+            player.anims.play('turn');
+        }
+
+        if (cursors.up.isDown && player.body.touching.down) {
+            player.setVelocityY(-330);
+        }
+
+        // Update username position to follow the player
+        username.setPosition(player.x, player.y - 20);
     }
 
     

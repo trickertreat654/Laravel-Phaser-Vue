@@ -11,6 +11,8 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    // width: window.innerWidth, // Dynamically use window width
+    // height: window.innerHeight, // Dynamically use window height
     parent: 'game-container',
     backgroundColor: '#028af8',
     physics: {
@@ -20,6 +22,10 @@ const config = {
             debug: false
         }
     },
+    // scale: {
+    //     mode: Phaser.Scale.RESIZE, // Automatically resize the canvas
+    //     autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game in the window
+    // },
     scene: [
         Boot,
         Preloader,
