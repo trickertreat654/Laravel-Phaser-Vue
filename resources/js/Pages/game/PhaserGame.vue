@@ -1,7 +1,8 @@
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, watch, onUnmounted, ref } from 'vue';
 import { EventBus } from './EventBus';
 import StartGame from './main';
+import { usePage } from '@inertiajs/vue3';
 
 // Save the current scene instance
 const scene = ref();
@@ -9,8 +10,15 @@ const game = ref();
 
 const props = defineProps({
     gameinfo: String,
+    number: Number,
 });
 // console.log(props.gameinfo);
+
+const page = usePage();
+
+watch (() => props.number, (data) => {
+    EventBus.emit('event-name', data);
+});
 
 const emit = defineEmits(['current-active-scene', 'player-lost']);
 
@@ -47,6 +55,7 @@ defineExpose({ scene, game });
 </script>
 
 <template>
+ 
     
     <div id="game-container"></div>
 </template>

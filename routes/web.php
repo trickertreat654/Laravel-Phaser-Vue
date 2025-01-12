@@ -35,9 +35,11 @@ Route::put('/trash', function (Request $request) {
 })->name('trash.update');
 
 Route::get('/dashboard', function () {
+    $number = rand(0, 100);
     $scores = Score::all();
     return Inertia::render('Dashboard', [
         'scores' => $scores,
+        'number' => $number,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

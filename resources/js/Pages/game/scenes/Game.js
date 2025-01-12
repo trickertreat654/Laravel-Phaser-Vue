@@ -8,9 +8,15 @@ let cursors;
 let stars;
 let score = 0;
 let scoreText;
+let randomText;
 let bombs;
 let gameOver = false;
 let username;
+
+
+// In Phaser
+// Listen for an event
+
 
 
 export class Game extends Scene
@@ -76,12 +82,36 @@ stars.children.iterate(function (child) {
 
 });
 
+
+this.physics.add.overlap(player, stars, this.collectStar, null, this);
+
 this.physics.add.collider(stars, platforms);
 
-this.physics.add.overlap(player, stars, collectStar, null, this);
+
+scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+randomText = this.add.text(50, 50, 'Random', { fontSize: '32px', fill: '#000' });
+username = this.add.text(player.x, player.y-10, this.game.customData, { fontSize: '8px', fill: '#000' });
+console.log('GameInfo in Game:', this.game.customData);
+
+EventBus.on('event-name', (data) => {
+    // Do something with the data
+    randomText.setText('random: ' + data);
+});
 
 
-function collectStar (player, star)
+bombs = this.physics.add.group();
+
+this.physics.add.collider(bombs, platforms);
+
+this.physics.add.collider(player, bombs, this.hitBomb, null, this);
+
+
+
+
+EventBus.emit('current-scene-ready', this);
+}
+
+collectStar (player, star)
 {
     star.disableBody(true, true);
 
@@ -105,22 +135,10 @@ function collectStar (player, star)
     
         }
 }
-
-scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-username = this.add.text(player.x, player.y-10, this.game.customData, { fontSize: '8px', fill: '#000' });
-console.log('GameInfo in Game:', this.game.customData);
-
-
-bombs = this.physics.add.group();
-
-this.physics.add.collider(bombs, platforms);
-
-this.physics.add.collider(player, bombs, hitBomb, null, this);
-
-function hitBomb (player, bomb)
+hitBomb (player, bomb)
 {
     this.physics.pause();
-
+    
     player.setTint(0xff0000);
 
     player.anims.play('turn');
@@ -129,11 +147,6 @@ function hitBomb (player, bomb)
 
     EventBus.emit('player-lost', { score });
 }
-
-
-
-        EventBus.emit('current-scene-ready', this);
-    }
 
     changeScene ()
     {
