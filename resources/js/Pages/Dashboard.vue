@@ -1,15 +1,21 @@
 <script setup>
 import Phaser from 'phaser';
-import { ref, toRaw } from 'vue';
+import { ref, toRaw, watch } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import PhaserGame from './game/PhaserGame.vue';
+import { usePoll } from '@inertiajs/vue3'
+
+usePoll(2000)
 
 
 defineProps({
     gameinfo: String,
     scores: Array,
+    number: Number,
 })
+
 const page = usePage();
+
 
 // The sprite can only be moved in the MainMenu Scene
 const canMoveSprite = ref();
@@ -88,7 +94,7 @@ const currentScene = (scene) => {
 
 <template>
     <div class="flex bg-black  justify-center items-center h-screen">
-        <PhaserGame @player-lost="handlePlayerLost" :gameinfo="page.props.auth.user.name" ref="phaserRef" @current-active-scene="currentScene" />
+        <PhaserGame :number @player-lost="handlePlayerLost" :gameinfo="page.props.auth.user.name" ref="phaserRef" @current-active-scene="currentScene" />
         
         <div>
             <div>
