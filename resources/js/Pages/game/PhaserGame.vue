@@ -39,6 +39,11 @@ onMounted(() => {
         emit('player-lost', payload.score); // Emit to parent
     });
 
+    // Listen for the player-position event
+    EventBus.on('player-position', (payload) => {
+        emit('player-position', payload); // Emit to parent
+    });
+
 });
 
 onUnmounted(() => {

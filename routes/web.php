@@ -34,8 +34,16 @@ Route::put('/trash', function (Request $request) {
     return redirect()->back();
 })->name('trash.update');
 
-Route::get('/dashboard', function () {
-    $number = rand(0, 100);
+Route::get('/dashboard', function (Request $request) {
+
+    if($request->spot == null){
+        $number = 0;
+    }
+    else{
+        $number = $request->spot['x'] + $request->spot['y'];
+    }
+
+    //$number = rand(0, 100);
     $scores = Score::all();
     return Inertia::render('Dashboard', [
         'scores' => $scores,
