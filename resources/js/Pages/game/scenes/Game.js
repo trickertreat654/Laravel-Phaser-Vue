@@ -106,6 +106,16 @@ this.physics.add.collider(bombs, platforms);
 this.physics.add.collider(player, bombs, this.hitBomb, null, this);
 
 
+this.time.addEvent({
+    delay: 5000, // 5 seconds
+    loop: true,
+    callback: () => {
+        const playerPosition = { x: player.x, y: player.y };
+        EventBus.emit('player-position', playerPosition);
+        console.log('Emitting player position:', playerPosition);
+    }
+});
+
 
 
 EventBus.emit('current-scene-ready', this);
@@ -157,6 +167,8 @@ hitBomb (player, bomb)
 
     update() {
         cursors = this.input.keyboard.createCursorKeys();
+
+
 
         if (cursors.left.isDown) {
             player.setVelocityX(-160);

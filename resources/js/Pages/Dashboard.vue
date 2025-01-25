@@ -4,8 +4,9 @@ import { ref, toRaw, watch } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import PhaserGame from './game/PhaserGame.vue';
 import { usePoll } from '@inertiajs/vue3'
+// import { useRouter } from 'vue-router'
 
-usePoll(2000)
+// usePoll(2000)
 
 
 defineProps({
@@ -55,6 +56,17 @@ const moveSprite = () => {
     }
 
 }
+
+const updateRandom = (data) => {
+    router.reload({data: {spot: data}, only: ['number'], onFinish: visit => {
+        router.replace({
+        url: '/dashboard', // Use the current path without query parameters
+        preserveState: true, // Keep the page's current state
+    });
+    },});
+   
+
+}
 console.log(page.props.auth.user.name);
 
 const addSprite = () => {
@@ -94,7 +106,7 @@ const currentScene = (scene) => {
 
 <template>
     <div class="flex bg-black  justify-center items-center h-screen">
-        <PhaserGame :number @player-lost="handlePlayerLost" :gameinfo="page.props.auth.user.name" ref="phaserRef" @current-active-scene="currentScene" />
+        <PhaserGame :number @player-position="updateRandom" @player-lost="handlePlayerLost" :gameinfo="page.props.auth.user.name" ref="phaserRef" @current-active-scene="currentScene" />
         
         <div>
             <div>
